@@ -44,6 +44,11 @@ function anoMesParaTexto(anoMes) {
   return `${mes}/${(anoMes / 100) | 0}`;
 }
 
+// Date -> "AAAA-MM" (chave do eixo x)
+function chaveMes(data) {
+  return `${data.getFullYear()}-${String(data.getMonth() + 1).padStart(2, "0")}`;
+}
+
 // Date -> "MM/AAAA"
 function dataParaTexto(data) {
   return `${String(data.getMonth() + 1).padStart(2, "0")}/${data.getFullYear()}`;
@@ -213,9 +218,11 @@ function calcularMedidas(serie, pop, log) {
     medidas.pct_populacao.push(pct);
     medidas.pix_por_pessoa.push(ppp);
     medidas.valor_medio.push(vm);
-
-    log.push(`${anoMesParaTexto(linha.AnoMes)}: ${pix} Pix | ${pct.toFixed(1)}% da população | ${ppp.toFixed(1)} Pix por pessoa | R$ ${vm.toFixed(2)} por Pix`);
   }
+
+  // Igual ao notebook: imprime só o último mês
+  const i = medidas.datas.length - 1;
+  log.push(`${dataParaTexto(medidas.datas[i])}: ${medidas.pix[i]} Pix | ${medidas.pct_populacao[i].toFixed(1)}% da população | ${medidas.pix_por_pessoa[i].toFixed(1)} Pix por pessoa | R$ ${medidas.valor_medio[i].toFixed(2)} por Pix`);
   return medidas;
 }
 
@@ -260,29 +267,6 @@ async function compararCidades(lista, aoTerminar = () => {}) {
   return resultados;
 }
 
-// 2.8 Perguntas a–d
-function perguntas(medidas) {
-  const { datas, pix, pct_populacao, valor_medio } = medidas;
-  const iDez2020 = datas.findIndex(d => d.getFullYear() === 2020 && d.getMonth() === 11);
-
-  // a) primeiro mês com mais da metade da população fazendo Pix
-  const iMetade = pct_populacao.findIndex(p => p > 50);
-  const a = iMetade >= 0 ? dataParaTexto(datas[iMetade]) : "nunca";
-
-  // b) quantas vezes o último mês é maior que dez/2020
-  const b = iDez2020 >= 0 ? (pix[pix.length - 1] / pix[iDez2020]).toFixed(1) : "sem dados de 12/2020";
-
-  // c) mês com mais Pix
-  let iMax = 0;
-  pix.forEach((v, i) => { if (v > pix[iMax]) iMax = i; });
-  const c = `${dataParaTexto(datas[iMax])} – ${pix[iMax]}`;
-
-  // d) valor médio em dez/2020
-  const d = iDez2020 >= 0 ? `R$ ${valor_medio[iDez2020].toFixed(2)}` : "sem dados de 12/2020";
-
-  return { a, b, c, d };
-}
-
 // ===================== 3. Gráficos =====================
 
 const COR_PRIMARIA = "#E60025";
@@ -295,19 +279,19 @@ const FONTE_RODAPE = "Fonte: Banco Central do Brasil (Pix Dados Abertos) e IBGE 
 const GRAFICOS = [
   {
     campo: "pix", arquivo: "pix-por-mes.png",
-    titulo: "Pix feitos por pessoas", eixoY: "milhões de Pix por mês",
+    titulo: "Pix feitos por pessoas", tituloCidade: "Pix feitos por pessoas em {cidade}", eixoY: "milhões de Pix por mês",
     valor: v => v / 1e6,
     texto: v => v.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + " mi"
   },
   {
     campo: "pct_populacao", arquivo: "pix-populacao.png",
-    titulo: "Moradores que fizeram Pix no mês", eixoY: "% da população que fez Pix no mês",
+    titulo: "Moradores que fizeram Pix no mês", tituloCidade: "Moradores que fizeram Pix no mês, em {cidade}", eixoY: "% da população que fez Pix no mês",
     valor: v => v,
     texto: v => v.toLocaleString("pt-BR", { minimumFractionDigits: 1, maximumFractionDigits: 1 }) + "%"
   },
   {
     campo: "valor_medio", arquivo: "pix-valor-medio.png",
-    titulo: "Valor médio de um Pix", eixoY: "reais por Pix",
+    titulo: "Valor médio de um Pix", tituloCidade: "Valor médio de um Pix em {cidade}", eixoY: "reais por Pix",
     valor: v => v,
     texto: v => "R$ " + v.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })
   }
@@ -419,13 +403,14 @@ const pluginCidades = {
 function montarConfig(g, resultados, escala = 1) {
   const varias = resultados.length > 1;
 
-  // Eixo x = união dos meses de todas as cidades
-  const tempos = [...new Set(resultados.flatMap(r => r.medidas.datas.map(d => d.getTime())))].sort((a, b) => a - b);
+  // Eixo x = união dos meses de todas as cidades, com chave "AAAA-MM" (texto não sofre com fuso horário)
+  const chaves = [...new Set(resultados.flatMap(r => r.medidas.datas.map(chaveMes)))].sort();
+  const tempos = chaves.map(c => new Date(Number(c.slice(0, 4)), Number(c.slice(5)) - 1, 1).getTime());
 
   const datasets = resultados.map((r, i) => {
     const cor = PALETA[i % PALETA.length];
-    const porTempo = new Map(r.medidas.datas.map((d, j) => [d.getTime(), r.medidas[g.campo][j]]));
-    const data = tempos.map(t => ({ x: t, y: porTempo.has(t) ? g.valor(porTempo.get(t)) : null }));
+    const porMes = new Map(r.medidas.datas.map((d, j) => [chaveMes(d), r.medidas[g.campo][j]]));
+    const data = chaves.map((c, k) => ({ x: tempos[k], y: porMes.has(c) ? g.valor(porMes.get(c)) : null }));
 
     return {
       label: r.nomeCidade,
@@ -433,7 +418,7 @@ function montarConfig(g, resultados, escala = 1) {
       borderColor: cor,
       borderWidth: 2.5 * escala,
       tension: 0.25,
-      spanGaps: false,
+      spanGaps: !varias, // 1 cidade: linha contínua do 1º ao último mês
       pointRadius: 0,
       pointHoverRadius: 5 * escala,
       pointHitRadius: 8 * escala,
@@ -456,7 +441,7 @@ function montarConfig(g, resultados, escala = 1) {
 
   const ultimaData = new Date(tempos[tempos.length - 1]);
   const fonte = (tamanho, peso = 400, familia = FONTE_GRAFICO) => ({ family: familia, size: tamanho * escala, weight: peso });
-  const titulo = varias ? g.titulo : `${g.titulo} em ${resultados[0].nomeCidade}`;
+  const titulo = varias ? g.titulo : g.tituloCidade.replace("{cidade}", resultados[0].nomeCidade);
 
   return {
     type: "line",
@@ -579,10 +564,10 @@ function atualizarCodigo() {
 }
 
 $("mostrar-codigo").addEventListener("click", () => {
-  const bloco = $("codigo");
-  bloco.hidden = !bloco.hidden;
-  $("mostrar-codigo").textContent = bloco.hidden ? "Mostrar código" : "Ocultar código";
-  $("mostrar-codigo").setAttribute("aria-expanded", String(!bloco.hidden));
+  // Começa oculto a cada carregamento (o estado não é guardado)
+  const aberto = $("codigo").classList.toggle("aberto");
+  $("mostrar-codigo").textContent = aberto ? "Ocultar código" : "Mostrar código";
+  $("mostrar-codigo").setAttribute("aria-expanded", String(aberto));
 });
 
 campoCidade.addEventListener("input", atualizarCodigo);
@@ -717,7 +702,7 @@ function carregando(sim) {
 // ===================== Resultado =====================
 
 function mostrarResultados(resultados) {
-  // Cor fixa por cidade = ordem das cidades válidas (igual em chips, tabela, perguntas e gráficos)
+  // Cor fixa por cidade = ordem das cidades válidas (igual em chips, tabela e gráficos)
   const ok = resultados.filter(r => r.medidas);
   ok.forEach((r, i) => { r.cor = PALETA[i % PALETA.length]; });
 
@@ -748,7 +733,6 @@ function mostrarResultados(resultados) {
   const temDados = ok.length > 0;
   $("bloco-kpis").hidden = !temDados;
   $("bloco-graficos").hidden = !temDados;
-  $("bloco-perguntas").hidden = !temDados;
   if (!temDados) {
     charts.forEach(c => c.destroy());
     charts = [];
@@ -757,7 +741,6 @@ function mostrarResultados(resultados) {
 
   mostrarKpis(ok);
   desenharGraficos(ok);
-  mostrarPerguntas(ok);
 }
 
 // Números no formato brasileiro
@@ -826,23 +809,6 @@ function mostrarKpis(ok) {
     }));
   }
   render();
-}
-
-// 4. Perguntas a–d, uma coluna por cidade
-function mostrarPerguntas(ok) {
-  $("perguntas").innerHTML = ok.map(r => {
-    const p = perguntas(r.medidas);
-    return `
-      <div class="card">
-        <h3><span class="ponto-cor" style="background:${r.cor}"></span>${escapar(r.nomeCidade)}</h3>
-        <dl>
-          <dt>a) Primeiro mês com mais de 50% da população fazendo Pix</dt><dd>${p.a}</dd>
-          <dt>b) Pix do último mês ÷ Pix de 12/2020</dt><dd>${p.b}</dd>
-          <dt>c) Mês com mais Pix</dt><dd>${p.c}</dd>
-          <dt>d) Valor médio de um Pix em 12/2020</dt><dd>${p.d}</dd>
-        </dl>
-      </div>`;
-  }).join("");
 }
 
 // Botões de download

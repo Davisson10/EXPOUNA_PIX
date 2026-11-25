@@ -64,13 +64,16 @@ h2 { font-size: 1.25rem; margin: 40px 0 16px; }
 .curso { margin: 6px 0 0; font-size: 11px; opacity: .9; }
 
 /* ===== Página ===== */
-.pagina { max-width: 1080px; margin: 0 auto; padding: 24px 20px 48px; }
-.intro h2 { font-size: 2rem; margin: 8px 0 8px; }
-.intro h2::after {
-  content: ""; display: block; width: 48px; height: 4px; margin-top: 10px;
-  background: var(--primaria); border-radius: 2px;
+.pagina { max-width: 1080px; margin: 0 auto; padding: 40px 20px 48px; }  /* header → título: 40px */
+.intro h2 { display: inline-block; font-size: 2rem; margin: 0; }
+.intro h2::after {          /* linha do tamanho exato do título */
+  content: ""; display: block; width: 100%; height: 4px; margin-top: 8px;
+  background: var(--vermelho-expo);
 }
-.intro p { margin: 0 0 24px; color: var(--texto-suave); max-width: 680px; }
+.intro p {                  /* título → texto 16px; texto → formulário 28px */
+  margin: 16px 0 28px; max-width: 100%;
+  font-size: 16px; line-height: 1.6; color: #555; text-wrap: pretty;
+}
 
 .card {
   background: var(--card); border-radius: var(--raio);
@@ -102,7 +105,7 @@ h2 { font-size: 1.25rem; margin: 40px 0 16px; }
 .colab-campos { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; }
 .colab-campo label {
   display: block; margin-bottom: 6px;
-  font-size: 14px; font-weight: 700; text-transform: lowercase; color: var(--colab-texto);
+  font-size: 14px; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; color: var(--colab-texto);
 }
 .colab-campo input {
   width: 100%; height: 36px; padding: 0 12px;
@@ -126,7 +129,8 @@ h2 { font-size: 1.25rem; margin: 40px 0 16px; }
 }
 .colab-link:hover { text-decoration: underline; }
 
-.colab-codigo { margin: 12px 0 0; border-radius: 4px; overflow-x: auto; }
+.colab-codigo { display: none; margin: 12px 0 0; border-radius: 4px; overflow-x: auto; }
+.colab-codigo.aberto { display: block; }
 .colab-codigo code.hljs, .colab-codigo code {
   display: block; background: #1E1E1E; padding: 12px 14px;
   font: 13px/1.6 "Roboto Mono", Consolas, "Courier New", monospace;
@@ -219,14 +223,6 @@ th[aria-sort="descending"] button::after { content: " ▼"; color: var(--primari
   margin: 0; padding: 10px 14px; border-radius: 8px;
   background: #FFF6E0; color: #5C4200; font-size: .9rem;
 }
-
-/* ===== Perguntas ===== */
-.perguntas { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; }
-.perguntas h3 { margin: 0 0 12px; font-size: 1rem; display: flex; align-items: center; }
-.perguntas dl { margin: 0; }
-.perguntas dt { font-size: .875rem; color: var(--texto-suave); }
-.perguntas dd { margin: 2px 0 12px; font-weight: 700; font-family: var(--fonte-titulo); }
-.perguntas dd:last-child { margin-bottom: 0; }
 
 /* ===== Rodapé ===== */
 .rodape {

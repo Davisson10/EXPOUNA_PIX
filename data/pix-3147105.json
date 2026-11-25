@@ -1,0 +1,520 @@
+{
+ "gerado_em": "2026-11-25T01:10:43.735Z",
+ "codigo": 3147105,
+ "municipio": "Pará de Minas",
+ "uf": "MG",
+ "populacao": 97139,
+ "value": [
+  {
+   "AnoMes": 202403,
+   "Municipio_Ibge": 3147105,
+   "VL_PagadorPF": 319286999.43,
+   "QT_PagadorPF": 1365006,
+   "QT_PES_PagadorPF": 53910
+  },
+  {
+   "AnoMes": 202312,
+   "Municipio_Ibge": 3147105,
+   "VL_PagadorPF": 319647713.93,
+   "QT_PagadorPF": 1344764,
+   "QT_PES_PagadorPF": 52345
+  },
+  {
+   "AnoMes": 202205,
+   "Municipio_Ibge": 3147105,
+   "VL_PagadorPF": 162850711.66,
+   "QT_PagadorPF": 507092,
+   "QT_PES_PagadorPF": 38651
+  },
+  {
+   "AnoMes": 202507,
+   "Municipio_Ibge": 3147105,
+   "VL_PagadorPF": 466295640.23,
+   "QT_PagadorPF": 1888294,
+   "QT_PES_PagadorPF": 60153
+  },
+  {
+   "AnoMes": 202209,
+   "Municipio_Ibge": 3147105,
+   "VL_PagadorPF": 179835020.16,
+   "QT_PagadorPF": 616433,
+   "QT_PES_PagadorPF": 41920
+  },
+  {
+   "AnoMes": 202302,
+   "Municipio_Ibge": 3147105,
+   "VL_PagadorPF": 198401687.21,
+   "QT_PagadorPF": 705753,
+   "QT_PES_PagadorPF": 45152
+  },
+  {
+   "AnoMes": 202408,
+   "Municipio_Ibge": 3147105,
+   "VL_PagadorPF": 392709256.76,
+   "QT_PagadorPF": 1614206,
+   "QT_PES_PagadorPF": 56662
+  },
+  {
+   "AnoMes": 202309,
+   "Municipio_Ibge": 3147105,
+   "VL_PagadorPF": 261988134.72,
+   "QT_PagadorPF": 1035489,
+   "QT_PES_PagadorPF": 50358
+  },
+  {
+   "AnoMes": 202604,
+   "Municipio_Ibge": 3147105,
+   "VL_PagadorPF": 491298526.71,
+   "QT_PagadorPF": 2043308,
+   "QT_PES_PagadorPF": 62379
+  },
+  {
+   "AnoMes": 202404,
+   "Municipio_Ibge": 3147105,
+   "VL_PagadorPF": 331555866.34,
+   "QT_PagadorPF": 1374269,
+   "QT_PES_PagadorPF": 54416
+  },
+  {
+   "AnoMes": 202310,
+   "Municipio_Ibge": 3147105,
+   "VL_PagadorPF": 281069940.78,
+   "QT_PagadorPF": 1134169,
+   "QT_PES_PagadorPF": 51113
+  },
+  {
+   "AnoMes": 202211,
+   "Municipio_Ibge": 3147105,
+   "VL_PagadorPF": 196701699.42,
+   "QT_PagadorPF": 681911,
+   "QT_PES_PagadorPF": 43400
+  },
+  {
+   "AnoMes": 202307,
+   "Municipio_Ibge": 3147105,
+   "VL_PagadorPF": 254219949.88,
+   "QT_PagadorPF": 974327,
+   "QT_PES_PagadorPF": 49152
+  },
+  {
+   "AnoMes": 202101,
+   "Municipio_Ibge": 3147105,
+   "VL_PagadorPF": 29239445.04,
+   "QT_PagadorPF": 49663,
+   "QT_PES_PagadorPF": 11358
+  },
+  {
+   "AnoMes": 202405,
+   "Municipio_Ibge": 3147105,
+   "VL_PagadorPF": 348548157.48,
+   "QT_PagadorPF": 1467787,
+   "QT_PES_PagadorPF": 55150
+  },
+  {
+   "AnoMes": 202610,
+   "Municipio_Ibge": 3147105,
+   "VL_PagadorPF": 539060204.63,
+   "QT_PagadorPF": 2216044,
+   "QT_PES_PagadorPF": 64152
+  },
+  {
+   "AnoMes": 202504,
+   "Municipio_Ibge": 3147105,
+   "VL_PagadorPF": 415246428.7,
+   "QT_PagadorPF": 1753191,
+   "QT_PES_PagadorPF": 59090
+  },
+  {
+   "AnoMes": 202108,
+   "Municipio_Ibge": 3147105,
+   "VL_PagadorPF": 103165588.96,
+   "QT_PagadorPF": 240311,
+   "QT_PES_PagadorPF": 28447
+  },
+  {
+   "AnoMes": 202512,
+   "Municipio_Ibge": 3147105,
+   "VL_PagadorPF": 545459164.31,
+   "QT_PagadorPF": 2199651,
+   "QT_PES_PagadorPF": 61538
+  },
+  {
+   "AnoMes": 202105,
+   "Municipio_Ibge": 3147105,
+   "VL_PagadorPF": 68494540.59,
+   "QT_PagadorPF": 152173,
+   "QT_PES_PagadorPF": 22587
+  },
+  {
+   "AnoMes": 202305,
+   "Municipio_Ibge": 3147105,
+   "VL_PagadorPF": 238360417.68,
+   "QT_PagadorPF": 883800,
+   "QT_PES_PagadorPF": 47884
+  },
+  {
+   "AnoMes": 202206,
+   "Municipio_Ibge": 3147105,
+   "VL_PagadorPF": 162592457.62,
+   "QT_PagadorPF": 523542,
+   "QT_PES_PagadorPF": 39440
+  },
+  {
+   "AnoMes": 202505,
+   "Municipio_Ibge": 3147105,
+   "VL_PagadorPF": 442289067.79,
+   "QT_PagadorPF": 1874711,
+   "QT_PES_PagadorPF": 59654
+  },
+  {
+   "AnoMes": 202111,
+   "Municipio_Ibge": 3147105,
+   "VL_PagadorPF": 115590601.13,
+   "QT_PagadorPF": 309432,
+   "QT_PES_PagadorPF": 31355
+  },
+  {
+   "AnoMes": 202103,
+   "Municipio_Ibge": 3147105,
+   "VL_PagadorPF": 51646020.44,
+   "QT_PagadorPF": 96618,
+   "QT_PES_PagadorPF": 16779
+  },
+  {
+   "AnoMes": 202110,
+   "Municipio_Ibge": 3147105,
+   "VL_PagadorPF": 107941634.16,
+   "QT_PagadorPF": 287384,
+   "QT_PES_PagadorPF": 31039
+  },
+  {
+   "AnoMes": 202601,
+   "Municipio_Ibge": 3147105,
+   "VL_PagadorPF": 455225968.73,
+   "QT_PagadorPF": 1936383,
+   "QT_PES_PagadorPF": 61488
+  },
+  {
+   "AnoMes": 202509,
+   "Municipio_Ibge": 3147105,
+   "VL_PagadorPF": 480223672.2,
+   "QT_PagadorPF": 1903623,
+   "QT_PES_PagadorPF": 60484
+  },
+  {
+   "AnoMes": 202606,
+   "Municipio_Ibge": 3147105,
+   "VL_PagadorPF": 495947199.75,
+   "QT_PagadorPF": 2102082,
+   "QT_PES_PagadorPF": 63109
+  },
+  {
+   "AnoMes": 202202,
+   "Municipio_Ibge": 3147105,
+   "VL_PagadorPF": 126816316.02,
+   "QT_PagadorPF": 363214,
+   "QT_PES_PagadorPF": 34285
+  },
+  {
+   "AnoMes": 202409,
+   "Municipio_Ibge": 3147105,
+   "VL_PagadorPF": 377868529.82,
+   "QT_PagadorPF": 1567955,
+   "QT_PES_PagadorPF": 56871
+  },
+  {
+   "AnoMes": 202410,
+   "Municipio_Ibge": 3147105,
+   "VL_PagadorPF": 400069475.07,
+   "QT_PagadorPF": 1626412,
+   "QT_PES_PagadorPF": 57272
+  },
+  {
+   "AnoMes": 202012,
+   "Municipio_Ibge": 3147105,
+   "VL_PagadorPF": 20549678.38,
+   "QT_PagadorPF": 33564,
+   "QT_PES_PagadorPF": 8558
+  },
+  {
+   "AnoMes": 202406,
+   "Municipio_Ibge": 3147105,
+   "VL_PagadorPF": 341583502.1,
+   "QT_PagadorPF": 1474867,
+   "QT_PES_PagadorPF": 55537
+  },
+  {
+   "AnoMes": 202508,
+   "Municipio_Ibge": 3147105,
+   "VL_PagadorPF": 493415710.16,
+   "QT_PagadorPF": 1953367,
+   "QT_PES_PagadorPF": 60350
+  },
+  {
+   "AnoMes": 202106,
+   "Municipio_Ibge": 3147105,
+   "VL_PagadorPF": 77519915.38,
+   "QT_PagadorPF": 175376,
+   "QT_PES_PagadorPF": 24638
+  },
+  {
+   "AnoMes": 202210,
+   "Municipio_Ibge": 3147105,
+   "VL_PagadorPF": 190570394.84,
+   "QT_PagadorPF": 654156,
+   "QT_PES_PagadorPF": 42769
+  },
+  {
+   "AnoMes": 202204,
+   "Municipio_Ibge": 3147105,
+   "VL_PagadorPF": 147607272.99,
+   "QT_PagadorPF": 455999,
+   "QT_PES_PagadorPF": 37156
+  },
+  {
+   "AnoMes": 202511,
+   "Municipio_Ibge": 3147105,
+   "VL_PagadorPF": 482262426.45,
+   "QT_PagadorPF": 2004136,
+   "QT_PES_PagadorPF": 61068
+  },
+  {
+   "AnoMes": 202203,
+   "Municipio_Ibge": 3147105,
+   "VL_PagadorPF": 147537541.34,
+   "QT_PagadorPF": 439305,
+   "QT_PES_PagadorPF": 35911
+  },
+  {
+   "AnoMes": 202104,
+   "Municipio_Ibge": 3147105,
+   "VL_PagadorPF": 60782259.91,
+   "QT_PagadorPF": 120751,
+   "QT_PES_PagadorPF": 19410
+  },
+  {
+   "AnoMes": 202304,
+   "Municipio_Ibge": 3147105,
+   "VL_PagadorPF": 217235726.03,
+   "QT_PagadorPF": 818214,
+   "QT_PES_PagadorPF": 47019
+  },
+  {
+   "AnoMes": 202201,
+   "Municipio_Ibge": 3147105,
+   "VL_PagadorPF": 121926847.01,
+   "QT_PagadorPF": 341077,
+   "QT_PES_PagadorPF": 33163
+  },
+  {
+   "AnoMes": 202308,
+   "Municipio_Ibge": 3147105,
+   "VL_PagadorPF": 268979260.34,
+   "QT_PagadorPF": 1039674,
+   "QT_PES_PagadorPF": 49983
+  },
+  {
+   "AnoMes": 202102,
+   "Municipio_Ibge": 3147105,
+   "VL_PagadorPF": 36916248.61,
+   "QT_PagadorPF": 67508,
+   "QT_PES_PagadorPF": 13870
+  },
+  {
+   "AnoMes": 202407,
+   "Municipio_Ibge": 3147105,
+   "VL_PagadorPF": 389138131.07,
+   "QT_PagadorPF": 1529275,
+   "QT_PES_PagadorPF": 56107
+  },
+  {
+   "AnoMes": 202611,
+   "Municipio_Ibge": 3147105,
+   "VL_PagadorPF": 424256469.91,
+   "QT_PagadorPF": 1682391,
+   "QT_PES_PagadorPF": 63497
+  },
+  {
+   "AnoMes": 202609,
+   "Municipio_Ibge": 3147105,
+   "VL_PagadorPF": 528737865.61,
+   "QT_PagadorPF": 2157089,
+   "QT_PES_PagadorPF": 63880
+  },
+  {
+   "AnoMes": 202506,
+   "Municipio_Ibge": 3147105,
+   "VL_PagadorPF": 427009705.53,
+   "QT_PagadorPF": 1812826,
+   "QT_PES_PagadorPF": 59789
+  },
+  {
+   "AnoMes": 202306,
+   "Municipio_Ibge": 3147105,
+   "VL_PagadorPF": 239633847.21,
+   "QT_PagadorPF": 913130,
+   "QT_PES_PagadorPF": 48476
+  },
+  {
+   "AnoMes": 202510,
+   "Municipio_Ibge": 3147105,
+   "VL_PagadorPF": 487932129.8,
+   "QT_PagadorPF": 1926567,
+   "QT_PES_PagadorPF": 60703
+  },
+  {
+   "AnoMes": 202411,
+   "Municipio_Ibge": 3147105,
+   "VL_PagadorPF": 389449315.99,
+   "QT_PagadorPF": 1672769,
+   "QT_PES_PagadorPF": 57621
+  },
+  {
+   "AnoMes": 202602,
+   "Municipio_Ibge": 3147105,
+   "VL_PagadorPF": 429173897.46,
+   "QT_PagadorPF": 1740139,
+   "QT_PES_PagadorPF": 61367
+  },
+  {
+   "AnoMes": 202207,
+   "Municipio_Ibge": 3147105,
+   "VL_PagadorPF": 172541896.56,
+   "QT_PagadorPF": 564057,
+   "QT_PES_PagadorPF": 40178
+  },
+  {
+   "AnoMes": 202412,
+   "Municipio_Ibge": 3147105,
+   "VL_PagadorPF": 445661688.75,
+   "QT_PagadorPF": 1850025,
+   "QT_PES_PagadorPF": 58219
+  },
+  {
+   "AnoMes": 202303,
+   "Municipio_Ibge": 3147105,
+   "VL_PagadorPF": 236979885.99,
+   "QT_PagadorPF": 831342,
+   "QT_PES_PagadorPF": 46460
+  },
+  {
+   "AnoMes": 202212,
+   "Municipio_Ibge": 3147105,
+   "VL_PagadorPF": 221372658.64,
+   "QT_PagadorPF": 790608,
+   "QT_PES_PagadorPF": 44526
+  },
+  {
+   "AnoMes": 202107,
+   "Municipio_Ibge": 3147105,
+   "VL_PagadorPF": 93011247.74,
+   "QT_PagadorPF": 215227,
+   "QT_PES_PagadorPF": 26829
+  },
+  {
+   "AnoMes": 202503,
+   "Municipio_Ibge": 3147105,
+   "VL_PagadorPF": 402418647.03,
+   "QT_PagadorPF": 1717881,
+   "QT_PES_PagadorPF": 58799
+  },
+  {
+   "AnoMes": 202402,
+   "Municipio_Ibge": 3147105,
+   "VL_PagadorPF": 292751945.43,
+   "QT_PagadorPF": 1223453,
+   "QT_PES_PagadorPF": 53164
+  },
+  {
+   "AnoMes": 202208,
+   "Municipio_Ibge": 3147105,
+   "VL_PagadorPF": 186461984.31,
+   "QT_PagadorPF": 596924,
+   "QT_PES_PagadorPF": 41155
+  },
+  {
+   "AnoMes": 202109,
+   "Municipio_Ibge": 3147105,
+   "VL_PagadorPF": 100892131.94,
+   "QT_PagadorPF": 256047,
+   "QT_PES_PagadorPF": 29304
+  },
+  {
+   "AnoMes": 202311,
+   "Municipio_Ibge": 3147105,
+   "VL_PagadorPF": 294090858.51,
+   "QT_PagadorPF": 1194137,
+   "QT_PES_PagadorPF": 51715
+  },
+  {
+   "AnoMes": 202608,
+   "Municipio_Ibge": 3147105,
+   "VL_PagadorPF": 537156577.24,
+   "QT_PagadorPF": 2236968,
+   "QT_PES_PagadorPF": 63772
+  },
+  {
+   "AnoMes": 202401,
+   "Municipio_Ibge": 3147105,
+   "VL_PagadorPF": 313282830.18,
+   "QT_PagadorPF": 1239144,
+   "QT_PES_PagadorPF": 52820
+  },
+  {
+   "AnoMes": 202603,
+   "Municipio_Ibge": 3147105,
+   "VL_PagadorPF": 478923532.78,
+   "QT_PagadorPF": 2013691,
+   "QT_PES_PagadorPF": 62012
+  },
+  {
+   "AnoMes": 202112,
+   "Municipio_Ibge": 3147105,
+   "VL_PagadorPF": 131009491.4,
+   "QT_PagadorPF": 373231,
+   "QT_PES_PagadorPF": 32497
+  },
+  {
+   "AnoMes": 202501,
+   "Municipio_Ibge": 3147105,
+   "VL_PagadorPF": 393568495.25,
+   "QT_PagadorPF": 1612632,
+   "QT_PES_PagadorPF": 58116
+  },
+  {
+   "AnoMes": 202607,
+   "Municipio_Ibge": 3147105,
+   "VL_PagadorPF": 529150085.26,
+   "QT_PagadorPF": 2218217,
+   "QT_PES_PagadorPF": 63433
+  },
+  {
+   "AnoMes": 202502,
+   "Municipio_Ibge": 3147105,
+   "VL_PagadorPF": 385523652.84,
+   "QT_PagadorPF": 1583046,
+   "QT_PES_PagadorPF": 58237
+  },
+  {
+   "AnoMes": 202605,
+   "Municipio_Ibge": 3147105,
+   "VL_PagadorPF": 514782345.72,
+   "QT_PagadorPF": 2168208,
+   "QT_PES_PagadorPF": 62955
+  },
+  {
+   "AnoMes": 202301,
+   "Municipio_Ibge": 3147105,
+   "VL_PagadorPF": 204699055.07,
+   "QT_PagadorPF": 714844,
+   "QT_PES_PagadorPF": 44938
+  },
+  {
+   "AnoMes": 202011,
+   "Municipio_Ibge": 3147105,
+   "VL_PagadorPF": 5328126.92,
+   "QT_PagadorPF": 8036,
+   "QT_PES_PagadorPF": 3249
+  }
+ ]
+}
