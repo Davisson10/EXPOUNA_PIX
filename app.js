@@ -1,7 +1,37 @@
 // Pix na cidade · réplica do notebook da prática (Sistemas Distribuídos e Mobile · ExpoUNA)
 // Só frontend: busca IBGE, SIDRA e Banco Central direto do navegador (todos aceitam CORS).
 
+// Autores que aparecem no cabeçalho do banner (edite aqui)
+const AUTORES = "Davisson Henrique • Giovane Pereira • Nathan William • Pedro Henrique Silva • Raul Adelino • Victor Augusto • Wender Samuel";
+
 // ===================== Utilidades =====================
+
+// AAAAMM de hoje (ex.: 202611)
+function mesAtual() {
+  const hoje = new Date();
+  return hoje.getFullYear() * 100 + (hoje.getMonth() + 1);
+}
+
+const esperar = ms => new Promise(ok => setTimeout(ok, ms));
+
+// Cache no localStorage (try/catch: o navegador pode bloquear ou estar cheio)
+function lerCache(chave) {
+  try { return JSON.parse(localStorage.getItem(chave)); } catch (e) { return null; }
+}
+function gravarCache(chave, valor) {
+  try { localStorage.setItem(chave, JSON.stringify(valor)); } catch (e) { /* sem cache, segue */ }
+}
+
+// Arquivo salvo junto com o site (pasta data/). Retorna null se não existir.
+async function lerArquivoLocal(caminho) {
+  try {
+    const res = await fetch(caminho);
+    return res.ok ? await res.json() : null;
+  } catch (e) { return null; }
+}
+
+// Fica true quando uma chamada falha por falta de rede: aí o Banco Central nem é tentado
+let semInternet = false;
 
 // Igual ao str.title() do Python: primeira letra de cada palavra em maiúscula
 function titleCase(texto) {
@@ -39,10 +69,22 @@ async function erroHttp(res, api) {
 
 // 2.1 Código IBGE da cidade
 async function buscarCodigo(cidade, uf, log) {
-  const url = `https://servicodados.ibge.gov.br/api/v1/localidades/estados/${uf}/municipios`;
-  const res = await fetch(url);
-  if (!res.ok) throw await erroHttp(res, "IBGE");
-  const municipios = await res.json();
+  // A lista de municípios não muda: guarda só id e nome no cache
+  const chave = `ibge_mun_${uf}`;
+  let municipios = lerCache(chave);
+  if (!municipios) {
+    try {
+      const url = `https://servicodados.ibge.gov.br/api/v1/localidades/estados/${uf}/municipios`;
+      const res = await fetch(url);
+      if (!res.ok) throw await erroHttp(res, "IBGE");
+      municipios = (await res.json()).map(m => ({ id: m.id, nome: m.nome }));
+      gravarCache(chave, municipios);
+    } catch (erro) {
+      if (erro instanceof TypeError) semInternet = true; // falha de rede
+      municipios = await lerArquivoLocal(`data/municipios-${uf}.json`);
+      if (!municipios) throw erro;
+    }
+  }
 
   for (const m of municipios) {
     if (m.nome.toLowerCase() === cidade.toLowerCase()) {
@@ -56,44 +98,101 @@ async function buscarCodigo(cidade, uf, log) {
 
 // 2.2 População do Censo 2022 (SIDRA, tabela 4709)
 async function buscarPopulacao(codigo, log) {
-  const url = `https://apisidra.ibge.gov.br/values/t/4709/n6/${codigo}/v/93/p/2022`;
-  const res = await fetch(url);
-  if (!res.ok) throw await erroHttp(res, "SIDRA");
-  const dados = await res.json();
-  const pop = parseInt(dados[1].V); // a linha 0 é o cabeçalho
+  // O Censo 2022 não muda: usa o cache se tiver
+  const chave = `ibge_pop_${codigo}`;
+  let pop = lerCache(chave);
+  if (!pop) {
+    try {
+      const url = `https://apisidra.ibge.gov.br/values/t/4709/n6/${codigo}/v/93/p/2022`;
+      const res = await fetch(url);
+      if (!res.ok) throw await erroHttp(res, "SIDRA");
+      const dados = await res.json();
+      pop = parseInt(dados[1].V); // a linha 0 é o cabeçalho
+      gravarCache(chave, pop);
+    } catch (erro) {
+      if (erro instanceof TypeError) semInternet = true;
+      const snapshot = await lerArquivoLocal(`data/pix-${codigo}.json`);
+      if (!snapshot) throw erro;
+      pop = snapshot.populacao;
+    }
+  }
   log.push(`População (Censo 2022): ${pop} habitantes`);
   return pop;
 }
 
+// Uma requisição ao Banco Central, com timeout de 180 s
+async function tentarPix(url) {
+  const controle = new AbortController();
+  const relogio = setTimeout(() => controle.abort(), 180000);
+  try {
+    const res = await fetch(url, { signal: controle.signal });
+    if (!res.ok) throw await erroHttp(res, "Banco Central");
+    return (await res.json()).value;
+  } catch (e) {
+    if (e.name === "AbortError") {
+      const erro = new Error("Banco Central não respondeu em 180 s");
+      erro.api = "Banco Central";
+      throw erro;
+    }
+    throw e;
+  } finally {
+    clearTimeout(relogio);
+  }
+}
+
 // 2.3 Transações Pix do município (Banco Central)
+// Ordem: cache do mês → até 3 tentativas na API → arquivo salvo em data/
 async function buscarPix(codigo, log) {
+  const chave = `pix_${codigo}_${mesAtual()}`;
+  const cache = lerCache(chave);
+  if (cache) {
+    log.push(`Banco Central: ${cache.length} meses (cache local)`);
+    return cache;
+  }
+
   const url = encodeURI(
     "https://olinda.bcb.gov.br/olinda/servico/Pix_DadosAbertos/versao/v1/odata/" +
     "TransacoesPixPorMunicipio(DataBase=@DataBase)?@DataBase='202011'&$format=json" +
-    `&$filter=Municipio_Ibge eq ${codigo}`
+    `&$filter=Municipio_Ibge eq ${codigo}` +
+    "&$select=AnoMes,Municipio_Ibge,QT_PagadorPF,VL_PagadorPF,QT_PES_PagadorPF"
   );
-  let res;
-  try {
-    res = await fetch(url, { signal: AbortSignal.timeout(90000) }); // o BCB às vezes demora muito
-  } catch (e) {
-    if (e.name !== "TimeoutError") throw e;
-    const erro = new Error("Banco Central não respondeu em 90 s (serviço lento ou fora do ar). Tente de novo.");
-    erro.api = "Banco Central";
-    throw erro;
+
+  let ultimoErro = null;
+  if (!semInternet) {
+    for (let tentativa = 1; tentativa <= 3; tentativa++) {
+      if (tentativa > 1) {
+        await esperar(tentativa === 2 ? 3000 : 6000); // espera 3 s e depois 6 s
+        log.push(`Banco Central: tentativa ${tentativa} de 3...`);
+      }
+      try {
+        const valores = await tentarPix(url);
+        log.push(`Banco Central: ${valores.length} meses recebidos para o município ${codigo}`);
+        gravarCache(chave, valores);
+        return valores;
+      } catch (erro) {
+        ultimoErro = erro;
+        log.push(`  falhou: ${erro.message}`);
+        if (erro instanceof TypeError && !navigator.onLine) { semInternet = true; break; }
+        if (erro.status >= 400 && erro.status < 500) break; // erro do pedido: repetir não adianta
+      }
+    }
   }
-  if (!res.ok) throw await erroHttp(res, "Banco Central");
-  const json = await res.json();
-  log.push(`Banco Central: ${json.value.length} meses recebidos para o município ${codigo}`);
-  return json.value;
+
+  // Plano B: dados salvos pelo scripts/gerar-snapshot.mjs
+  const snapshot = await lerArquivoLocal(`data/pix-${codigo}.json`);
+  if (snapshot) {
+    const dia = new Date(snapshot.gerado_em).toLocaleDateString("pt-BR");
+    log.push(`Banco Central indisponível — usando dados salvos em ${dia}`);
+    return snapshot.value;
+  }
+  throw ultimoErro || new Error("Sem internet e sem dados salvos deste município.");
 }
 
 // 2.4 Ordena e tira o mês atual (incompleto)
 function prepararSerie(bruta, log) {
-  const hoje = new Date();
-  const mesAtual = hoje.getFullYear() * 100 + (hoje.getMonth() + 1); // AAAAMM
   const serie = [...bruta]
     .sort((a, b) => a.AnoMes - b.AnoMes)
-    .filter(linha => linha.AnoMes < mesAtual);
+    .filter(linha => linha.AnoMes < mesAtual());
   log.push(`Série pronta: ${serie.length} meses completos, de ${serie[0].AnoMes} a ${serie[serie.length - 1].AnoMes}`);
   return serie;
 }
@@ -141,17 +240,24 @@ async function pixNaCidade(cidade, uf) {
   }
 }
 
-// 2.7 Várias cidades em paralelo: uma que falha não derruba as outras
-async function compararCidades(lista) {
-  const resultados = await Promise.allSettled(lista.map(c => pixNaCidade(c.cidade, c.uf)));
-  return resultados.map((r, i) => r.status === "fulfilled"
-    ? r.value
-    : {
-        nomeCidade: r.reason.nomeCidade || `${titleCase(lista[i].cidade)}/${lista[i].uf}`,
+// 2.7 Várias cidades, UMA DE CADA VEZ (o BCB derruba requisições simultâneas).
+// Uma que falha não derruba as outras; aoTerminar(resultadosAteAgora) mostra cada cidade que fica pronta.
+async function compararCidades(lista, aoTerminar = () => {}) {
+  const resultados = [];
+  for (const c of lista) {
+    try {
+      resultados.push(await pixNaCidade(c.cidade, c.uf));
+    } catch (erro) {
+      resultados.push({
+        nomeCidade: erro.nomeCidade || `${titleCase(c.cidade)}/${c.uf}`,
         codigo: null, populacao: null, medidas: null,
-        log: r.reason.log || [],
-        erro: r.reason
+        log: erro.log || [],
+        erro
       });
+    }
+    aoTerminar(resultados);
+  }
+  return resultados;
 }
 
 // 2.8 Perguntas a–d
@@ -583,17 +689,29 @@ $("form").addEventListener("submit", async e => {
 
   carregando(true);
   try {
-    const resultados = await compararCidades(lista);
-    mostrarResultados(resultados);
+    // Mostra cada cidade assim que ela termina
+    await compararCidades(lista, mostrarResultados);
   } finally {
     carregando(false);
   }
 });
 
+// Spinner com cronômetro
+let cronometro = null;
 function carregando(sim) {
   $("carregando").hidden = !sim;
   $("executar").disabled = sim;
   $("adicionar").disabled = sim;
+  clearInterval(cronometro);
+  if (sim) {
+    const inicio = Date.now();
+    const atualizar = () => {
+      const s = Math.floor((Date.now() - inicio) / 1000);
+      $("carregando-texto").textContent = `Buscando dados no Banco Central... ${s} s`;
+    };
+    atualizar();
+    cronometro = setInterval(atualizar, 1000);
+  }
 }
 
 // ===================== Resultado =====================
@@ -613,7 +731,10 @@ function mostrarResultados(resultados) {
   // 1. Terminal por cidade
   $("logs").innerHTML = resultados.map(r => {
     const linhas = r.log.map(l => {
-      const classe = l.startsWith("Cidade não encontrada") ? "linha linha-destaque" : "linha";
+      let classe = "linha";
+      if (l.startsWith("Cidade não encontrada")) classe += " linha-destaque";
+      else if (l.startsWith("  falhou")) classe += " linha-erro";
+      else if (/tentativa|cache local|indisponível/.test(l)) classe += " linha-aviso";
       return `<span class="${classe}">${escapar(l)}</span>`;
     });
     if (r.erro) linhas.push(`<span class="linha linha-erro">Erro: ${escapar(r.erro.message)}</span>`);
@@ -729,5 +850,6 @@ document.querySelectorAll("[data-baixar]").forEach(b =>
   b.addEventListener("click", () => baixarPNG(Number(b.dataset.baixar))));
 
 // Início
+$("autores").textContent = AUTORES;
 desenharChips();
 atualizarCodigo();

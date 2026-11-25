@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Pix na cidade · ExpoUNA</title>
+  <title>Pesquisa sobre o PIX: Análise do sistema de transações integrado à API's</title>
 
   <!-- Fontes: Montserrat (títulos), Open Sans (texto), Roboto + Google Sans (formulário estilo Colab) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -18,23 +18,28 @@
 </head>
 <body>
 
+  <!-- Cabeçalho: faixa vermelha ExpoUNA 2026.2 -->
   <header class="topo">
-    <div class="topo-conteudo">
-      <!-- Se o logo não existir, mostra o wordmark "una" -->
-      <img class="logo" src="img/una-logo.svg" alt="Una"
-           onerror="this.hidden = true; this.nextElementSibling.hidden = false">
-      <span class="wordmark" hidden>una</span>
-      <p class="topo-texto">
-        <strong>Pix na cidade</strong>
-        <span>Sistemas Distribuídos e Mobile · ExpoUNA</span>
-      </p>
+    <div class="topo-linha">
+      <div class="topo-logo">
+        <!-- Se a imagem não carregar, mostra o texto -->
+        <img src="img/una-65anos.png" alt="65 anos Una 1961–2026" height="90"
+             onerror="this.hidden = true; this.nextElementSibling.hidden = false">
+        <span class="logo-texto" hidden>65 ANOS ›una</span>
+      </div>
+      <p class="topo-selo">EXPOUNA 2026.2 • EDIÇÃO COMEMORATIVA</p>
+    </div>
+    <div class="topo-titulo">
+      <h1>Pesquisa sobre o PIX: Análise do sistema de transações integrado à API's</h1>
+      <p id="autores" class="autores"></p>
+      <p class="curso">Sistemas de Informação • UNA Betim • 2026</p>
     </div>
   </header>
 
   <main class="pagina">
 
     <section class="intro">
-      <h1>Pix na cidade</h1>
+      <h2>Pix na cidade</h2>
       <p>Quantos Pix os moradores fazem por mês, quantos já usam e quanto vale cada Pix.
          Dados do Banco Central e do IBGE, buscados direto das APIs públicas.</p>
     </section>
@@ -69,10 +74,10 @@
       <ul id="chips" class="chips" aria-label="Cidades adicionadas"></ul>
     </form>
 
-    <!-- Carregando -->
+    <!-- Carregando, com cronômetro -->
     <div id="carregando" class="carregando" hidden>
       <span class="spinner" aria-hidden="true"></span>
-      <span>Buscando dados no IBGE e no Banco Central…</span>
+      <span id="carregando-texto">Buscando dados no Banco Central... 0 s</span>
     </div>
 
     <!-- Resultado -->

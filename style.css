@@ -2,6 +2,7 @@
 :root {
   --primaria: #E60025;        /* vermelho do CSS de una.br */
   --primaria-escura: #B8001E;
+  --vermelho-expo: #E30613;   /* faixa do cabeçalho ExpoUNA 2026.2 */
   --texto: #1E1E1E;
   --texto-suave: #555A60;
   --fundo: #F5F5F7;
@@ -22,6 +23,7 @@
 }
 
 * { box-sizing: border-box; }
+[hidden] { display: none !important; } /* o atributo hidden sempre vence o CSS */
 
 body {
   margin: 0;
@@ -35,25 +37,36 @@ body {
 h1, h2, h3 { font-family: var(--fonte-titulo); line-height: 1.2; }
 h2 { font-size: 1.25rem; margin: 40px 0 16px; }
 
-/* ===== Header ===== */
-.topo { background: var(--card); border-bottom: 1px solid var(--borda); }
-.topo-conteudo {
-  max-width: 1080px; margin: 0 auto; padding: 14px 20px;
-  display: flex; align-items: center; gap: 16px;
+/* ===== Cabeçalho: faixa vermelha ===== */
+.topo {
+  background: var(--vermelho-expo); color: #fff;
+  padding: 32px 48px 24px; overflow: hidden;
 }
-.logo { height: 36px; width: auto; }
-.wordmark {
-  font-family: var(--fonte-titulo); font-weight: 800; font-size: 2rem;
-  color: var(--primaria); letter-spacing: -.02em; line-height: 1;
+.topo-linha { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; }
+.topo-logo { position: relative; isolation: isolate; }
+.topo-logo img { display: block; height: 90px; width: auto; }
+.logo-texto { display: inline-block; font: 800 2rem/90px var(--fonte-titulo); }
+
+/* Dois anéis elípticos atrás do logo */
+.topo-logo::before, .topo-logo::after {
+  content: ""; position: absolute; z-index: -1; pointer-events: none;
+  border: 2px solid rgba(255, 255, 255, .35); border-radius: 50%;
+  transform: rotate(-20deg);
 }
-.topo-texto { margin: 0; display: flex; flex-wrap: wrap; gap: 0 8px; font-size: .9rem; color: var(--texto-suave); }
-.topo-texto strong { color: var(--texto); font-family: var(--fonte-titulo); }
-.topo-texto strong::after { content: " ·"; color: var(--texto-suave); font-weight: 400; }
+.topo-logo::before { left: -40px; top: -30px; width: 260px; height: 140px; }
+.topo-logo::after  { left: -10px; top: -14px; width: 300px; height: 120px; }
+
+.topo-selo { margin: 0; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; }
+
+.topo-titulo { text-align: center; }
+.topo-titulo h1 { margin: 40px 0 0; font-weight: 700; font-size: clamp(20px, 2.2vw, 28px); }
+.autores { margin: 20px 0 0; font-size: 13px; font-weight: 700; }
+.curso { margin: 6px 0 0; font-size: 11px; opacity: .9; }
 
 /* ===== Página ===== */
 .pagina { max-width: 1080px; margin: 0 auto; padding: 24px 20px 48px; }
-.intro h1 { font-size: 2rem; margin: 8px 0 8px; }
-.intro h1::after {
+.intro h2 { font-size: 2rem; margin: 8px 0 8px; }
+.intro h2::after {
   content: ""; display: block; width: 48px; height: 4px; margin-top: 10px;
   background: var(--primaria); border-radius: 2px;
 }
@@ -145,7 +158,7 @@ h2 { font-size: 1.25rem; margin: 40px 0 16px; }
 .carregando { display: flex; align-items: center; gap: 12px; margin: 24px 0; color: var(--texto-suave); }
 .carregando[hidden] { display: none; }
 .spinner {
-  width: 22px; height: 22px; border-radius: 50%;
+  width: 22px; height: 22px; border-radius: 50%; flex: none;
   border: 3px solid #DADCE0; border-top-color: var(--primaria);
   animation: girar .8s linear infinite;
 }
@@ -174,6 +187,7 @@ h2 { font-size: 1.25rem; margin: 40px 0 16px; }
 .terminal .linha { display: block; white-space: pre; }
 .terminal .linha-destaque { color: #FDD663; font-weight: 700; }
 .terminal .linha-erro { color: #F28B82; }
+.terminal .linha-aviso { color: #8AB4F8; }
 
 /* ===== KPIs ===== */
 .kpis { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
@@ -225,10 +239,20 @@ th[aria-sort="descending"] button::after { content: " ▼"; color: var(--primari
 @media (max-width: 800px) {
   .kpis { grid-template-columns: repeat(2, 1fr); }
 }
+@media (max-width: 700px) {
+  .topo { padding: 24px 20px 20px; }
+  .topo-linha { flex-direction: column-reverse; align-items: center; gap: 14px; }
+  .topo-selo { text-align: center; }
+  .topo-logo img { height: 60px; }
+  .logo-texto { font-size: 1.4rem; line-height: 60px; }
+  .topo-logo::before { left: -30px; top: -22px; width: 180px; height: 100px; }
+  .topo-logo::after  { left: -8px; top: -10px; width: 210px; height: 84px; }
+  .topo-titulo h1 { margin-top: 28px; }
+}
 @media (max-width: 600px) {
   .colab-campos { grid-template-columns: 1fr; gap: 16px; }
   .colab-acoes { flex-direction: column; align-items: stretch; }
   .colab-botoes .btn { flex: 1; }
   .colab-link { align-self: flex-start; }
-  .intro h1 { font-size: 1.6rem; }
+  .intro h2 { font-size: 1.6rem; }
 }
