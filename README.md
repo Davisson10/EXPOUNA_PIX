@@ -49,13 +49,9 @@ Sem internet, abra a página uma vez antes com internet, para o navegador guarda
 - `index.html` – página
 - `style.css` – visual (identidade Una + formulário no estilo Colab)
 - `app.js` – funções do notebook (`buscarCodigo`, `buscarPopulacao`, `buscarPix`, `prepararSerie`,
-  `calcularMedidas`, `pixNaCidade`, `compararCidades`, `perguntas`, `desenharGraficos`) e a interface
+  `calcularMedidas`, `pixNaCidade`, `compararCidades`, `desenharGraficos`) e a interface
 - `img/una-65anos.png` – logo do cabeçalho (opcional; sem ele aparece o texto "65 ANOS ›una")
 - `scripts/gerar-snapshot.mjs` – baixa a cópia offline para `data/`
 - `data/` – cópia offline dos dados
 
 Bibliotecas via CDN: Chart.js 4, chartjs-adapter-date-fns e highlight.js.
-
----
-
-Davisson Henrique de Aguiar Silva · RA 62520519
